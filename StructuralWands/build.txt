@@ -1,0 +1,3 @@
+displayName = Structural Wands
+author = John M
+version = 0.1

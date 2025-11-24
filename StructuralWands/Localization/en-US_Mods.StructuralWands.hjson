@@ -1,0 +1,73 @@
+Items: {
+	DestroyerWand: {
+		DisplayName: Destroyer Wand
+		Tooltip: Destroys tiles in a small area
+	}
+
+	ChestWand: {
+		DisplayName: Chest Wand
+		Tooltip: Creates a wooden, gold, ice, or desert chest with loot depending on biome
+	}
+
+	CloudLakeWand: {
+		DisplayName: Cloud Lake Wand
+		Tooltip: Creates cloud island filled with water
+	}
+
+	HellFortWand: {
+		DisplayName: Hell Fort Wand
+		Tooltip: Creates a stack of hell houses. Only usable in the underworld
+	}
+
+	MeteorWand: {
+		DisplayName: Meteor Wand
+		Tooltip: Creates a natural meteor. Will not work if too close to a chest or hard tiles
+	}
+
+	PyramidWand: {
+		DisplayName: Pyramid Wand
+		Tooltip: Creates a pyramid including chest and coins
+	}
+
+	TempleWand: {
+		DisplayName: Temple Wand
+		Tooltip: Creates the jungle temple with altar
+	}
+
+	DesertCloudIslandWand: {
+		DisplayName: Desert Cloud Island Wand
+		Tooltip: Creates a sky island with desert theme
+	}
+
+	GravityBlock: {
+		DisplayName: Gravity Block
+		Tooltip: Pulls you towards the block
+	}
+
+	ShimmerBiomeWand: {
+		DisplayName: Shimmer Biome Wand
+		Tooltip: Creates a shimmer biome with stone surrounding it
+	}
+
+	PlanetWand: {
+		DisplayName: Planet Wand
+		Tooltip: Creates a planet from a list of random blocks
+	}
+
+	ForceFieldBlock: {
+		DisplayName: Force Field Block
+		Tooltip: Pushes you away from the block
+	}
+}
+
+Tiles: {
+	GravityBlock.MapEntry: Gravity Block
+	ForceFieldBlock.MapEntry: Force Field Block
+}
+
+Buffs: {
+	ZeroGravityDebuff: {
+		DisplayName: Zero Gravity Debuff
+		Description: You feel weightless
+	}
+}
