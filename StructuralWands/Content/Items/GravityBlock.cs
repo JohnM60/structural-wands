@@ -1,24 +1,52 @@
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ObjectData;
 using Microsoft.Xna.Framework;
+using StructuralWands.Content.Buffs;
 
-namespace StructuralWands.Content.Items
+namespace StructuralWands.Content.Tiles
 {
-	public class GravityBlock : ModItem
+	public class GravityBlockEntity : ModTileEntity
 	{
-		public override void SetDefaults()
-		{
-			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.GravityBlock>(), 0);
-			Item.rare = ItemRarityID.Blue;
+		public override void Update() {
+			foreach (var player in Main.ActivePlayers) {
+				float distToBlock = player.Distance(new Vector2(this.Position.X * 16, this.Position.Y * 16));
+				if (distToBlock < 1000) {
+					player.velocity -= new Vector2(((player.position.X - this.Position.X * 16) / (distToBlock * 4.0f)), 
+						((player.position.Y - this.Position.Y * 16) / (distToBlock * 2.0f)));
+					player.gravity = 0.0f;
+				}
+			}
 		}
 
-		public override void AddRecipes() 
+		public override bool IsTileValidForEntity(int x, int y) {
+			Tile tile = Main.tile[x, y];
+			return tile.HasTile && tile.TileType == ModContent.TileType<GravityBlock>();
+		}
+	}
+
+	public class GravityBlock : ModTile
+	{
+		public override void SetStaticDefaults()
 		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.AsphaltBlock, 10);
-			recipe.AddIngredient(ItemID.ShadowPaint, 10);
-			recipe.AddTile(TileID.Anvils);
+			Main.tileFrameImportant[Type] = true;
+
+			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1);
+			TileObjectData.newTile.StyleHorizontal = true;
+			TileObjectData.newTile.HookPostPlaceMyPlayer = ModContent.GetInstance<GravityBlockEntity>().Generic_HookPostPlaceMyPlayer;
+			TileObjectData.newTile.UsesCustomCanPlace = true;
+			TileObjectData.addTile(Type);
+			
+			AddMapEntry(new Color(200, 200, 200), CreateMapEntryName(), MapHoverText);
+		}
+
+		public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) {
+			ModContent.GetInstance<GravityBlockEntity>().Kill(i, j);
+		}
+
+		public static string MapHoverText(string name, int i, int j) {
+			return "Gravity Block";
 		}
 	}
 
