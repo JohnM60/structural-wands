@@ -1,11 +1,12 @@
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
+
 using Terraria.GameContent.Generation;
 
 namespace StructuralWands.Content.Items
 {
-	public class DestroyerWand : ModItem
+	public class BuilderWand : ModItem
 	{
 		int prevMouseX = 0;
 		int prevMouseY = 0;
@@ -17,15 +18,16 @@ namespace StructuralWands.Content.Items
 			Item.DefaultToStaff(0, 16, 25, 1);
 			Item.UseSound = SoundID.Item20;
 			Item.SetWeaponValues(20, 5);
+			Item.useTime = 1;
 			Item.rare = ItemRarityID.Blue;
 		}
 		
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.RubyStaff, 1);
-            recipe.AddIngredient(ItemID.Bomb, 25);
-            recipe.AddIngredient(ItemID.Dynamite, 5);
+			recipe.AddIngredient(ItemID.AmberStaff, 1);
+            recipe.AddIngredient(ItemID.BuilderPotion, 2);
+            recipe.AddIngredient(ItemID.Toolbox, 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
@@ -33,6 +35,16 @@ namespace StructuralWands.Content.Items
 	 	public override void OnConsumeMana(Player player, int mana) {
 			int mouseX = (int) (Main.MouseWorld.X / 16);
 			int mouseY = (int) (Main.MouseWorld.Y / 16);
+			int selectedTile = 0;
+			int tileStyle = 0;
+			for (int i = 0; i < 59; i++) {
+				if (player.inventory[i].createTile != -1) {
+					selectedTile = player.inventory[i].createTile;
+					tileStyle = player.inventory[i].placeStyle;
+					break;
+				}
+			}
+			
 			if (prevMouseX == 0) {
 				prevMouseX = mouseX;
 				prevMouseY = mouseY;
@@ -50,7 +62,7 @@ namespace StructuralWands.Content.Items
 				}
 				for (int i = prevMouseX; i <= mouseX; i++) {
 					for (int j = prevMouseY; j <= mouseY; j++) {
-						WorldGen.KillTile(i, j, false, false, false);
+						WorldGen.PlaceTile(i, j, selectedTile, false, true, -1, tileStyle);
 					}
 				}
 				prevMouseX = 0;

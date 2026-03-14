@@ -5,7 +5,7 @@ using Terraria.GameContent.Generation;
 
 namespace StructuralWands.Content.Items
 {
-	public class DestroyerWand : ModItem
+	public class SlopeWand : ModItem
 	{
 		int prevMouseX = 0;
 		int prevMouseY = 0;
@@ -23,9 +23,12 @@ namespace StructuralWands.Content.Items
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.RubyStaff, 1);
-            recipe.AddIngredient(ItemID.Bomb, 25);
-            recipe.AddIngredient(ItemID.Dynamite, 5);
+			recipe.AddIngredient(ItemID.SapphireStaff, 1);
+			recipe.AddIngredient(ItemID.IronHammer, 1);
+			recipe.AddIngredient(ItemID.Amethyst, 1);
+			recipe.AddIngredient(ItemID.Topaz, 1);
+			recipe.AddIngredient(ItemID.Emerald, 1);
+			recipe.AddIngredient(ItemID.Ruby, 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
@@ -33,6 +36,19 @@ namespace StructuralWands.Content.Items
 	 	public override void OnConsumeMana(Player player, int mana) {
 			int mouseX = (int) (Main.MouseWorld.X / 16);
 			int mouseY = (int) (Main.MouseWorld.Y / 16);
+			int slopeValue = 0;
+			bool halfBlock = false;
+
+			if (player.inventory[0].type == ModContent.ItemType<SlopeWand>()) {
+				halfBlock = true;
+			}
+			for (int i = 1; i <= 4; i++) {
+				if (player.inventory[i].type == ModContent.ItemType<SlopeWand>()) {
+					slopeValue = i;
+				}
+				
+			}
+			
 			if (prevMouseX == 0) {
 				prevMouseX = mouseX;
 				prevMouseY = mouseY;
@@ -50,7 +66,10 @@ namespace StructuralWands.Content.Items
 				}
 				for (int i = prevMouseX; i <= mouseX; i++) {
 					for (int j = prevMouseY; j <= mouseY; j++) {
-						WorldGen.KillTile(i, j, false, false, false);
+						if (halfBlock)
+							WorldGen.PoundTile(i, j);
+						else
+							WorldGen.SlopeTile(i, j, slopeValue, false);
 					}
 				}
 				prevMouseX = 0;

@@ -5,7 +5,7 @@ using Terraria.GameContent.Generation;
 
 namespace StructuralWands.Content.Items
 {
-	public class DestroyerWand : ModItem
+	public class PainterWand : ModItem
 	{
 		int prevMouseX = 0;
 		int prevMouseY = 0;
@@ -23,9 +23,11 @@ namespace StructuralWands.Content.Items
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.RubyStaff, 1);
-            recipe.AddIngredient(ItemID.Bomb, 25);
-            recipe.AddIngredient(ItemID.Dynamite, 5);
+			recipe.AddIngredient(ItemID.DiamondStaff, 1);
+			recipe.AddIngredient(ItemID.Paintbrush, 1);
+			recipe.AddIngredient(ItemID.RedPaint, 25);
+			recipe.AddIngredient(ItemID.GreenPaint, 25);
+			recipe.AddIngredient(ItemID.BluePaint, 25);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
@@ -33,6 +35,24 @@ namespace StructuralWands.Content.Items
 	 	public override void OnConsumeMana(Player player, int mana) {
 			int mouseX = (int) (Main.MouseWorld.X / 16);
 			int mouseY = (int) (Main.MouseWorld.Y / 16);
+			byte selectedPaint = 0;
+			byte selectedPaintCoating = 0;
+			bool removePaint = false;
+
+			for (int i = 0; i < 59; i++) {
+				if (player.inventory[i].type == ItemID.PaintScraper) {
+					removePaint = true;
+				}
+				if (player.inventory[i].paint > 0) {
+					selectedPaint = player.inventory[i].paint;
+					break;
+				}
+				if (player.inventory[i].paintCoating > 0) {
+					selectedPaintCoating = player.inventory[i].paintCoating;
+					break;
+				}
+			}
+			
 			if (prevMouseX == 0) {
 				prevMouseX = mouseX;
 				prevMouseY = mouseY;
@@ -50,12 +70,22 @@ namespace StructuralWands.Content.Items
 				}
 				for (int i = prevMouseX; i <= mouseX; i++) {
 					for (int j = prevMouseY; j <= mouseY; j++) {
-						WorldGen.KillTile(i, j, false, false, false);
+						if (removePaint) {
+							WorldGen.paintCoatTile(i, j, 0, false);
+							WorldGen.paintTile(i, j, 0, false);
+						}
+						else if (selectedPaintCoating > 0) {
+							WorldGen.paintCoatTile(i, j, selectedPaintCoating, false);
+						}
+						else {
+							WorldGen.paintTile(i, j, selectedPaint, false);
+						}
 					}
 				}
 				prevMouseX = 0;
 				prevMouseY = 0;
 			}
+			
 		}
 	}
 }
