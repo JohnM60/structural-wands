@@ -12,7 +12,7 @@ namespace StructuralWands.Content.Items
 		}
 
 		public override void SetDefaults() {
-			Item.DefaultToStaff(0, 16, 25, 1);
+			Item.DefaultToStaff(0, 16, 25, 10);
 			Item.UseSound = SoundID.Item20;
 			Item.SetWeaponValues(20, 5);
 			Item.rare = ItemRarityID.Blue;
@@ -21,7 +21,14 @@ namespace StructuralWands.Content.Items
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.AmethystStaff, 1);
+			recipe.AddIngredient(ItemID.RubyStaff, 1);
+			recipe.AddIngredient(ItemID.StoneBlock, 100);
+			recipe.AddIngredient(ItemID.ShimmerBrick, 20);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+
+			recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.DiamondStaff, 1);
 			recipe.AddIngredient(ItemID.StoneBlock, 100);
 			recipe.AddIngredient(ItemID.ShimmerBrick, 20);
 			recipe.AddTile(TileID.Anvils);

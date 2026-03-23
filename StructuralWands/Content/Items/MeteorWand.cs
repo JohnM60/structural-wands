@@ -12,7 +12,7 @@ namespace StructuralWands.Content.Items
 		}
 
 		public override void SetDefaults() {
-			Item.DefaultToStaff(0, 16, 25, 1);
+			Item.DefaultToStaff(0, 16, 25, 10);
 			Item.UseSound = SoundID.Item20;
 			Item.SetWeaponValues(20, 5);
 			Item.rare = ItemRarityID.Blue;

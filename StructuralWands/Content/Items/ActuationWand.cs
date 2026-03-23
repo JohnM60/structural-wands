@@ -2,16 +2,13 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.GameContent.Generation;
-using System.Collections.Generic;
 
 namespace StructuralWands.Content.Items
 {
-	public class BuilderWand : ModItem
+	public class ActuationWand : ModItem
 	{
 		int prevMouseX = 0;
 		int prevMouseY = 0;
-		Item currentItem;
-
 		public override void SetStaticDefaults() {
 			Item.staff[Type] = true;
 		}
@@ -21,54 +18,36 @@ namespace StructuralWands.Content.Items
 			Item.UseSound = SoundID.Item20;
 			Item.SetWeaponValues(20, 5);
 			Item.rare = ItemRarityID.Blue;
-			Item.shootSpeed = 0.0f;
 		}
 		
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.SapphireStaff, 1);
-            recipe.AddIngredient(ItemID.BuilderPotion, 2);
-            recipe.AddIngredient(ItemID.Toolbox, 1);
+            recipe.AddIngredient(ItemID.RedWrench, 1);
+            recipe.AddIngredient(ItemID.Wire, 20);
+            recipe.AddIngredient(ItemID.Actuator, 10);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 
 			recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.EmeraldStaff, 1);
-            recipe.AddIngredient(ItemID.BuilderPotion, 2);
-            recipe.AddIngredient(ItemID.Toolbox, 1);
+            recipe.AddIngredient(ItemID.RedWrench, 1);
+            recipe.AddIngredient(ItemID.Wire, 20);
+            recipe.AddIngredient(ItemID.Actuator, 10);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
 
-		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			TooltipLine line;
-			if (currentItem != null) {
-				line = new TooltipLine(Mod, "ItemName", "Builder Wand (" + currentItem.Name + ")");
-			}
-			else {
-				line = new TooltipLine(Mod, "ItemName", "Builder Wand ( No selection )");
-			}
-			tooltips[0] = line;
-		}
-
-		public override void UpdateInventory(Player player) {
-			for (int i = 0; i <= 50; i++) {
-				if ((player.inventory[i].createTile != -1 || player.inventory[i].createWall != -1)) {
-					currentItem = player.inventory[i];
-					break;
-				}
-			}
-		} 
-
 	 	public override void OnConsumeMana(Player player, int mana) {
 			int mouseX = (int) (Main.MouseWorld.X / 16);
 			int mouseY = (int) (Main.MouseWorld.Y / 16);
+			
 			if (prevMouseX == 0) {
 				prevMouseX = mouseX;
 				prevMouseY = mouseY;
 			}
-			else if (currentItem != null) {
+			else {
 				if (prevMouseX > mouseX) {
 					int temp = prevMouseX;
 					prevMouseX = mouseX;
@@ -81,15 +60,14 @@ namespace StructuralWands.Content.Items
 				}
 				for (int i = prevMouseX; i <= mouseX; i++) {
 					for (int j = prevMouseY; j <= mouseY; j++) {
-						if (currentItem.createTile != -1)
-							WorldGen.PlaceTile(i, j, currentItem.createTile, false, true, -1, currentItem.placeStyle);
-						else if (currentItem.createWall != -1)
-							WorldGen.PlaceWall(i, j, currentItem.createWall, false);
+						Tile tileToActuate = Main.tile[i, j];
+						tileToActuate.IsActuated = !tileToActuate.IsActuated;
 					}
 				}
 				prevMouseX = 0;
 				prevMouseY = 0;
 			}
+			
 		}
 	}
 }
