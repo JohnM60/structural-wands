@@ -1,3 +1,2 @@
 # structural-wands
-This is a mod made by me (John M) that spawns in structures at the click of the mouse. You can generate desert pyramids, sky islands, temples, and the shimmer biome using
-these wands. I have also added in three blocks that drag the player towards, give weightlessness or push the player away from the block.
+This is a mod made by me (John M) that allows you to spawn custom structures at the click of the mouse. These include desert pyramids, temples, shimmer biome, meteors and circular "planets". You can also place, actuate, paint, hammer, and destroy blocks in an area using wands as well. These wands can all be crafted using vanilla staves and some extra materials.
